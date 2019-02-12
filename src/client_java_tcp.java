@@ -37,8 +37,6 @@ public class client_java_tcp
 	
 	public static void cdCommand() throws IOException, ClassNotFoundException
 	{
-//		System.out.println("...........in cd command...............");
-
 		msgToServer.writeObject(command[1]);
 		String newpath = msgFromServer.readObject().toString();
 		if(newpath.equals("No such directory"))
@@ -53,29 +51,18 @@ public class client_java_tcp
 	
 	public static void lsCommand() throws IOException, ClassNotFoundException
 	{
-//		System.out.println("..........in ls command.............");		
-
-		//String showlistof = System.getProperty("user.dir");
-		
 		msgToServer.writeObject(command[1]);
 		String showlist = msgFromServer.readObject().toString();
 		System.out.println(showlist);
-		
 	}
 	
 	public static void putCommand() throws IOException
 	{
-//		System.out.println("..............put command.................");
-
 		Socket clientSocket2 = new Socket (ipaddress, port+1);
 		ObjectOutputStream msgToServer2 = new ObjectOutputStream(clientSocket2.getOutputStream()); 
 		ObjectInputStream msgFromServer2 = new ObjectInputStream(clientSocket2.getInputStream());
 		Scanner sc = new Scanner(System.in);
 
-/*		System.out.println("Enter file name: ");
-		String fileName = sc.nextLine(); 
-		
-*/
 		File file = new File(command[1]);
 		msgToServer.writeObject(command[1]);		//Sending file name to the server to open...
 		
@@ -108,10 +95,6 @@ public class client_java_tcp
 	
 	public static void getCommand() throws IOException, ClassNotFoundException
 	{
-//		System.out.println("...............get command................");
-		
-//		System.out.println("Enter the file name: ");
-//		String fileName = sc.nextLine(); 
 		msgToServer.writeObject(command[1]);
 		String filecontent ="";
 		
@@ -136,7 +119,6 @@ public class client_java_tcp
 		msgFromServer2.close();
 		msgToServer2.close();
 		clientSocket2.close();
-		
 	}
 
 	public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException 

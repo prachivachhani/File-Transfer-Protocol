@@ -25,7 +25,6 @@ public class server_java_udp {
 	
 	public static void cdCommand() throws ClassNotFoundException, IOException
 	{
-//		System.out.println("...........in cd command...............");
 		byte[] msgToUser = new byte[1024];
 		File dir = new File(command[1]);
 		
@@ -33,7 +32,6 @@ public class server_java_udp {
             System.setProperty("user.dir", dir.getAbsolutePath());
             String pwd = System.getProperty("user.dir");
             msgToUser = pwd.getBytes();
-            //System.out.println("Current directory path is " + pwd);
         } else {
         	msgToUser = "No such directory".getBytes();
         }
@@ -45,8 +43,6 @@ public class server_java_udp {
 	
 	public static void lsCommand() throws ClassNotFoundException, IOException
 	{
-
-	//	System.out.println("..........in ls command.............");		
 
 		byte[] msgToUser = new byte[1024];
 		String showlistof = command[1];
@@ -68,7 +64,6 @@ public class server_java_udp {
 	        for(int i=0; i<child.length; i++)
 	        {
 	        	sendlist = sendlist + child[i].getName() + "\n";
-	            //System.out.println(child[i].getName());
 	        }
 	        msgToUser = sendlist.getBytes();
 		}    
@@ -78,7 +73,6 @@ public class server_java_udp {
 	
 	public static void putCommand() throws ClassNotFoundException, IOException
 	{
-	//	System.out.println("...........................put command......................");
 	
 		byte[] filname_byte = new byte[1024];
 		DatagramPacket recpacket = new DatagramPacket(filname_byte, filname_byte.length);
@@ -92,7 +86,6 @@ public class server_java_udp {
 		String filedata[] = filename.split(" ");
 		long filesize = Long.parseLong((filedata[1]));	//storing file size in server variable filesize
 		long totalsentbytes = 0;
-//		System.out.println("FILESIZE: " + filesize);
 		String filecontent = "";
 		byte[] filcontent_byte = new byte[1024];
 		
@@ -111,28 +104,12 @@ public class server_java_udp {
 		fileWriter.write(filecontent);
 		fileWriter.flush();
 		fileWriter.close();
-/*
-		String ackno = "";
-		if(totalsentbytes+1 == filesize)
-		{
-			ackno = "ACK";
-		}
-		else {
-			ackno = "Did Not Receive valid data from Client. Terminating.";
-		}
-		byte ack[] = new byte[50];
-		ack = ackno.getBytes();
-		DatagramPacket sendpacket3 = new DatagramPacket(ack, ack.length, ipaddress, port);
-		socket.send(sendpacket3);
-		*/
 
 	}
 	
 
 	public static void getCommand() throws IOException, ClassNotFoundException
 	{
-//		System.out.println("...............get command................");
-
 		byte[] msgFromUser = new byte[1024];
 		byte[] msgToUser = new byte[1024];
 
@@ -176,15 +153,8 @@ public class server_java_udp {
 		
 		while(bytessent != bytestosend || offset==bytessent)
 		{
-/*			System.out.println(
-					"\n\nFILE LENGTH :" + file.length() + 
-					"\nBYTES TO SEND : " + bytestosend + 
-					"\nOFFSET: " + offset +
-					"\nsizeOfMsgToServer : "+ sizeOfMsgToServer);
-*/
 			System.arraycopy(b, (int) offset, msgToUser, 0, (int) sizeOfMsgToUser);
 			sendpacket = new DatagramPacket(msgToUser, (int) sizeOfMsgToUser , ipaddress, port);
-//			System.out.println("\n\tUSER DATA SENT: " + new String(msgToServer, 0, (int) sizeOfMsgToServer ));
 			socket.send(sendpacket);
 
 			bytessent = bytessent + sizeOfMsgToUser;
@@ -198,12 +168,6 @@ public class server_java_udp {
 				sizeOfMsgToUser = bytestosend - offset; 
 			}
 		}
-/*
-		byte[] ack = new byte[50];
-		DatagramPacket recpacket3 = new DatagramPacket(ack, ack.length);
-		String ackno = new String(recpacket3.getData(), 0, recpacket3.getLength());
-		System.out.println(ackno);		
-*/
 	}
 
 

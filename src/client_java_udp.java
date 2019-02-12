@@ -35,8 +35,6 @@ public class client_java_udp
 	
 	public static void cdCommand() throws IOException, ClassNotFoundException
 	{
-//		System.out.println("...........in cd command...............");
-
 		byte[] msgFromServer = new byte[1024];
 
 		DatagramPacket recpacket = new DatagramPacket(msgFromServer, msgFromServer.length);
@@ -53,7 +51,6 @@ public class client_java_udp
 	
 	public static void lsCommand() throws IOException, ClassNotFoundException
 	{
-//		System.out.println("..........in ls command.............");
 		byte[] msgFromServer = new byte[1024];
 		DatagramPacket recpacket = new DatagramPacket(msgFromServer, msgFromServer.length);
 		socket.receive(recpacket);
@@ -64,14 +61,12 @@ public class client_java_udp
 	
 	public static void putCommand() throws IOException, InterruptedException
 	{
-	//	System.out.println("..............put command.................");
 		byte[] msgToServer = new byte[1024];
 		String filedata = ""; 
 		File file = new File(command[1]);
 		if(file.isFile() && file.exists())
 		{
 			filedata = file.getName() + " " +  file.length();
-	//		System.out.println(filedata);
 		}
 		else {
 			filedata = "No such file or directory";
@@ -104,12 +99,6 @@ public class client_java_udp
 		
 		while(bytessent != bytestosend || offset==bytessent)
 		{
-/*			System.out.println(
-					"\n\nFILE LENGTH :" + file.length() + 
-					"\nBYTES TO SEND : " + bytestosend + 
-					"\nOFFSET: " + offset +
-					"\nsizeOfMsgToServer : "+ sizeOfMsgToServer);
-*/
 			System.arraycopy(b, (int) offset, msgToServer, 0, (int) sizeOfMsgToServer);
 			sendpacket = new DatagramPacket(msgToServer, (int) sizeOfMsgToServer , ipaddress, port);
 			socket.send(sendpacket);
@@ -125,18 +114,11 @@ public class client_java_udp
 				sizeOfMsgToServer = bytestosend - offset; 
 			}
 		}
-/*		
-		byte[] ack = new byte[50];
-		DatagramPacket recpacket3 = new DatagramPacket(ack, ack.length);
-		String ackno = new String(recpacket3.getData(), 0, recpacket3.getLength());
-		System.out.println(ackno);
-*/
 	}
 	
 	
 	public static void getCommand() throws IOException, ClassNotFoundException
 	{
-//		System.out.println("...............get command................");
 		
 		byte[] msgToServer = new byte[1024];
 		msgToServer = command[1].getBytes();
@@ -147,7 +129,6 @@ public class client_java_udp
 		DatagramPacket recpacket = new DatagramPacket(fildetails, fildetails.length);
 		socket.receive(recpacket);
 		String filenameAndSize = new String(recpacket.getData(), 0, recpacket.getLength());
-	//	System.out.println(filenameAndSize);
 		if(filenameAndSize.equals("No such file or directory"))
 		{
 			System.out.println(filenameAndSize);
@@ -159,7 +140,6 @@ public class client_java_udp
 			String filedata[] = filenameAndSize.split(" ");
 			long filesize = Long.parseLong((filedata[1]));	//storing file size in user variable filesize
 			long totalsentbytes = 0;
-		//	System.out.println("FILESIZE: " + filesize);
 			String filecontent = "";
 			byte[] filcontent_byte = new byte[1024];
 			
@@ -180,24 +160,6 @@ public class client_java_udp
 			fileWriter.flush();
 			fileWriter.close();
 	
-	/*		
-			String ackno = "";
-			if(totalsentbytes+1 == filesize)
-			{
-				ackno = "ACK";
-			}
-			else {
-				ackno = "Did Not Receive valid data from Client. Terminating.";
-			}
-			
-			byte ack[] = new byte[50];
-			ack = ackno.getBytes();
-			DatagramPacket sendpacket3 = new DatagramPacket(ack, ack.length, ipaddress, port);
-			socket.send(sendpacket3);
-			
-	*/		
-		//	System.out.println("File Content: " +filecontent);
-		//	System.out.println("Completed displaying file content from server");
 		}
 	}
 

@@ -26,8 +26,6 @@ public class server_java_tcp {
 	
 	public static void cdCommand() throws ClassNotFoundException, IOException
 	{
-//		System.out.println("...........in cd command...............");
-
 		String changedir = msgFromUser.readObject().toString();
 
 		File dir = new File(changedir);
@@ -36,7 +34,6 @@ public class server_java_tcp {
             System.setProperty("user.dir", dir.getAbsolutePath());
             String pwd = System.getProperty("user.dir");
             msgToUser.writeObject(pwd);
-            //System.out.println("Current directory path is " + pwd);
         } else {
         	msgToUser.writeObject("No such directory");
         }
@@ -45,7 +42,6 @@ public class server_java_tcp {
 	
 	public static void lsCommand() throws ClassNotFoundException, IOException
 	{
-	//	System.out.println("..........in ls command.............");		
 
 		String showlistof = msgFromUser.readObject().toString();
 		System.out.println(showlistof);
@@ -67,7 +63,6 @@ public class server_java_tcp {
 	        for(int i=0; i<child.length; i++)
 	        {
 	        	sendlist = sendlist + child[i].getName() + "\n";
-	            //System.out.println(child[i].getName());
 	        }
 	        msgToUser.writeObject(sendlist);
 		}    
@@ -76,7 +71,6 @@ public class server_java_tcp {
 	
 	public static void putCommand() throws ClassNotFoundException, IOException
 	{
-	//	System.out.println("...........................put command......................");
 		String filecontent ="";
 
 		ServerSocket serverSocket2 = new ServerSocket(serverport+1);
@@ -93,10 +87,7 @@ public class server_java_tcp {
 		fileWriter.write(filecontent);
 		fileWriter.flush();
 		fileWriter.close();
-		
-		//System.out.println(filecontent);
-		//System.out.println("Completed displaying file content from user");
-		
+				
 		msgFromUser2.close();
 		msgToUser2.close();
 		socket2.close();
@@ -105,8 +96,6 @@ public class server_java_tcp {
 	
 	public static void getCommand() throws IOException, ClassNotFoundException
 	{
-//		System.out.println("...............get command................");
-
 		ServerSocket serverSocket2 = new ServerSocket(serverport+1);
 		Socket socket2 = serverSocket2.accept();
 		ObjectOutputStream msgToUser2 = new ObjectOutputStream(socket2.getOutputStream());
@@ -134,15 +123,12 @@ public class server_java_tcp {
 		din.readFully (b);
 		din.close ();
 		String result = new String (b, 0, b.length);
-		//System.out.println(result);
 		msgToUser2.writeObject(result);
-		//System.out.println("File sent on server side");
 		
 		msgFromUser2.close();
 		msgToUser2.close();
 		socket2.close();
-		serverSocket2.close();
-		
+		serverSocket2.close();	
 	}
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException 
